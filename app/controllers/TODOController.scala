@@ -37,9 +37,11 @@ class TODOController @Inject()(val controllerComponents: ControllerComponents) e
 
   def delete(id: Long): Action[AnyContent] = Action {
     db find (_.id == id) match {
-      case Some(value) => db remove (db indexOf value)
+      case Some(value) =>
+        db remove (db indexOf value)
+        Ok
+      case _ => NotFound
     }
-    Ok
   }
 
 }
