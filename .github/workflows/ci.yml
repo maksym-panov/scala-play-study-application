@@ -21,6 +21,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: 'sbt'
+    - name: Install sbt
+      run: |
+        curl -fsSL https://raw.githubusercontent.com/sbt/install/master/bintray-sbt-rpm.repo | sudo tee /etc/apt/sources.list.d/sbt.list
+        sudo apt update
+        sudo apt install sbt -y
     - name: Run tests
       run: sbt test
     - name: Upload dependency graph
