@@ -1,9 +1,9 @@
-package controllers
+package e2e
 
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
-import play.api.test._
 import play.api.test.Helpers._
+import play.api.test._
 
 // https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
 class PlatformControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
