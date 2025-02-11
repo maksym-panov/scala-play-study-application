@@ -1,5 +1,3 @@
-name: 'play-app'
-
 services:
   postgres:
     container_name: postgres
