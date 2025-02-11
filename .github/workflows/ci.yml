@@ -31,6 +31,7 @@ jobs:
         run: |
           cd ./docker
           cp .env.template .env
+          ./pull.sh
           ./env.sh
 
       - name: Run tests
