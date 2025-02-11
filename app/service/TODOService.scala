@@ -2,6 +2,7 @@ package service
 
 import com.google.inject.{Inject, Singleton}
 import dao.TODODao
+import dto.CreateTODODto
 import model.TODO
 
 import scala.concurrent.Await
@@ -20,12 +21,12 @@ class TODOService @Inject()(val todoDao: TODODao) {
     Await.result(todoDao findTodoById id, 2.second)
   }
   
-  def createNewTodo(todo: TODO): TODO = {
-    Await.result(todoDao createTodo todo, 2.seconds)
+  def createNewTodo(dto: CreateTODODto): TODO = {
+    Await.result(todoDao createTodo TODO(0, dto.title, dto.body), 2.seconds)
   }
   
-  def deleteTodoById(id: Long): Unit = {
-    Await.ready(todoDao deleteTodo id, 2.seconds)
+  def deleteTodoById(id: Long): Int = {
+    Await.result(todoDao deleteTodo id, 2.seconds)
   }
   
 }

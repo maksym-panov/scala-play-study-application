@@ -1,10 +1,12 @@
 package controllers
 
 import com.google.inject.{Inject, Singleton}
+import dto.common.ErrorType.EntityNotFoundErr
+import dto.common.{AbstractResponseDto, ErrorResponseDto, ErrorType, MessageResponseDto}
+import dto.{CreateTODODto, TODODto, TODOListDto}
 import service.TODOService
 import model.TODO
 import play.api.Logging
-import play.api.libs.json.{Json, OFormat}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 
 @Singleton
@@ -12,36 +14,43 @@ class TODOController @Inject()(
                                 val todoService: TODOService,
                                 val controllerComponents: ControllerComponents
                               ) extends BaseController with Logging {
-
-  implicit private val todoListJson: OFormat[TODO] = Json.format[TODO]
-
+  
   def getAll: Action[AnyContent] = Action { request =>
     logger.info(s"getAll: from ${request.remoteAddress}")
-    Ok(Json toJson todoService.findAllTodos) as JSON
+    val todosDto: TODOListDto = TODOListDto fromTodoSet todoService.findAllTodos
+    val responseDto = AbstractResponseDto[TODOListDto](todosDto)
+    Ok(responseDto.toJson) as JSON
   }
 
   def getById(id: Long): Action[AnyContent] = Action { request =>
     logger.info(s"getById: requested ID - $id, from ${request.remoteAddress}")
-    val todo = todoService findTodoByIdOption id
-    todo.map(todo => Ok(Json toJson todo).as(JSON))
-      .getOrElse(
-        NotFound(
-          Json.obj("error" -> s"TODO with id $id not found" )
-        )
-      )
+    todoService findTodoByIdOption id match {
+      case Some(value) => 
+        val responseDto = AbstractResponseDto[TODODto](TODODto fromTodo value)
+        Ok(responseDto.toJson) as JSON
+      case None =>
+        val error = ErrorResponseDto(s"TODO with id $id not found", ErrorType.EntityNotFoundErr)
+        NotFound(error.toJson) as JSON
+    }
   }
 
-  def create: Action[TODO] = Action(parse.json[TODO]) { request =>
+  def create: Action[CreateTODODto] = Action(parse.json[CreateTODODto]) { request =>
     val body = request.body
     logger.info(s"create: with body - $body")
-    val todo = todoService createNewTodo body
-    Created(Json.obj("message" -> "TODO created", "todo" -> Json.toJson(todo)))
+    val todoDto = TODODto.fromTodo(todoService createNewTodo body)
+    val responseDto = AbstractResponseDto[TODODto](todoDto)
+    Created(responseDto.toJson) as JSON
   }
 
   def delete(id: Long): Action[AnyContent] = Action {
     logger.info(s"delete: requested ID - $id")
-    todoService deleteTodoById id
-    Ok(Json.obj("message" -> s"TODO with id $id deleted"))
+    val todosUpdated = todoService deleteTodoById id
+    todosUpdated match {
+      case 1 => Ok(MessageResponseDto.ofSuccess.toJson) as JSON
+      case _ => 
+        val response = ErrorResponseDto(s"TODO with id $id not found", EntityNotFoundErr)
+        NotFound(response.toJson) as JSON
+    } 
   }
 
 }
