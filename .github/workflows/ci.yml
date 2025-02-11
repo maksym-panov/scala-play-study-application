@@ -30,6 +30,7 @@ jobs:
       - name: Run CI environment
         run: |
           cd ./docker
+          cp .env.template .env
           ./env.sh
 
       - name: Run tests
