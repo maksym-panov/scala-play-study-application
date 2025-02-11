@@ -18,11 +18,19 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+
       - name: Install SBT
         uses: sbt/setup-sbt@v1
+
+      - name: Install Docker Compose
+        run: |
+          apt-get update
+          apt-get install -y docker-compose
+
       - name: Run CI environment
         run: |
           cd ./docker
           ./env.sh
+
       - name: Run tests
         run: sbt test
