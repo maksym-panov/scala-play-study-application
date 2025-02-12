@@ -4,10 +4,10 @@ import com.google.inject.{Inject, Singleton}
 import dto.common.ErrorType.EntityNotFoundErr
 import dto.common.{AbstractResponseDto, ErrorResponseDto, ErrorType, MessageResponseDto}
 import dto.{CreateTODODto, TODODto, TODOListDto}
-import service.TODOService
 import model.TODO
 import play.api.Logging
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import service.TODOService
 
 @Singleton
 class TODOController @Inject()(

@@ -6,8 +6,8 @@ import dto.CreateTODODto
 import model.TODO
 
 import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.*
-import scala.concurrent.duration.*
+import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent.duration._
 
 @Singleton
 class TODOService @Inject()(val todoDao: TODODao) {

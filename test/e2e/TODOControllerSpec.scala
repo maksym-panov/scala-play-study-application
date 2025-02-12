@@ -7,7 +7,7 @@ import model.TODO
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json, OFormat}
-import play.api.test.Helpers.*
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, Injecting}
 
 import scala.util.Random
@@ -34,7 +34,7 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
           value.id must be > 0L
           value.title mustBe dto.title
           value.body mustBe dto.body
-        case None => fail(s"Invalid JSON response - None")
+        case None => fail("Invalid JSON response - None")
       }
     }
 

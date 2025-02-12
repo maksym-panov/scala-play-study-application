@@ -1,7 +1,7 @@
 package model
 
+import slick.jdbc.PostgresProfile.api._
 import slick.lifted.{ProvenShape, Tag}
-import slick.jdbc.PostgresProfile.api.*
 
 case class TODO(id: Long, title: String, body: String) 
 
