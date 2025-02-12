@@ -14,21 +14,21 @@ class TODODao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
   private val todos = TableQuery[TODOS]
 
   def findTodoById(id: Long): Future[Option[TODO]] = {
-    db run todos.filter(_.id === id).result.headOption
+    db run todos.filter(_.id === id).result.headOption.transactionally
   }
 
   def findAllTodos: Future[Seq[TODO]] = {
-    db run todos.result
+    db run todos.result.transactionally
   }
 
   def createTodo(todo: TODO): Future[TODO] = {
-    val insertQuery = (todos returning todos.map(todo => todo)) += todo
-    db run insertQuery
+    val insertQuery = (todos returning todos.map(i => i)) += todo
+    db run insertQuery.transactionally
   }
 
   def deleteTodo(id: Long): Future[Int] = {
     val todo = todos filter (_.id === id)
-    db run todo.delete
+    db run todo.delete.transactionally
   }
   
 }
