@@ -3,7 +3,7 @@ package model
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.{ProvenShape, Tag}
 
-case class TODO(id: Long, title: String, body: String) 
+final case class TODO(id: Long, title: String, body: String)
 
 class TODOS(tag: Tag) extends Table[TODO](tag, "todos") {
   def id: Rep[Long] = column[Long]("id", O.PrimaryKey, O.AutoInc)
