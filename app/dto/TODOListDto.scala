@@ -3,7 +3,6 @@ package dto
 import model.TODO
 import play.api.libs.json.{JsValue, Json, OFormat}
 
-import java.util
 
 case class TODOListDto(count: Long, items: Set[TODODto]) extends DTO {
   override def toJson: JsValue = Json toJson this
@@ -12,7 +11,7 @@ case class TODOListDto(count: Long, items: Set[TODODto]) extends DTO {
 object TODOListDto {
   implicit val todoListDtoJson: OFormat[TODOListDto] = Json.format[TODOListDto]
   
-  def fromTodoSet(todos: Set[TODO]): TODOListDto = {
+  def fromTodoSet(todos: Set[TODO]) = {
     val items = todos map (todo => TODODto fromTodo todo)
     TODOListDto(items.size, items)
   }

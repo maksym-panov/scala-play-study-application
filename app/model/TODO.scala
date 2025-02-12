@@ -1,6 +1,5 @@
 package model
 
-import play.api.libs.json.{Json, OFormat}
 import slick.lifted.{ProvenShape, Tag}
 import slick.jdbc.PostgresProfile.api.*
 
