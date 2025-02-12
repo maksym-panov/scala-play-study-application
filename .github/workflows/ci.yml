@@ -33,7 +33,6 @@ jobs:
           cp .env.template .env
           ./pull.sh
           ./env.sh
-          sleep 10s
 
       - name: Run tests
-        run: sbt test
+        run: sbt ci:test
