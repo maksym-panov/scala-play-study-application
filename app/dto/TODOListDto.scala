@@ -11,7 +11,7 @@ case class TODOListDto(count: Long, items: Set[TODODto]) extends DTO {
 object TODOListDto {
   implicit val todoListDtoJson: OFormat[TODOListDto] = Json.format[TODOListDto]
   
-  def fromTodoSet(todos: Set[TODO]) = {
+  def fromTodoSet(todos: Set[TODO]): TODOListDto = {
     val items = todos map (todo => TODODto fromTodo todo)
     TODOListDto(items.size, items)
   }
