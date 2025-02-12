@@ -16,7 +16,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: sbt/setup-sbt@v1
-    - name: Run tests
-      run: sbt test
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Install SBT
+        uses: sbt/setup-sbt@v1
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Run CI environment
+        run: |
+          cd ./docker
+          cp .env.template .env
+          ./pull.sh
+          ./env.sh
+
+      - name: Run tests
+        run: sbt ci:test
