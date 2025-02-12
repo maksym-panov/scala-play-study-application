@@ -5,7 +5,10 @@ import play.api.libs.json.{Format, JsObject, JsResult, JsValue, Json, OFormat}
 
 import scala.reflect.ClassTag
 
-case class AbstractResponseDto[T](payload: T)(implicit ct: ClassTag[T], jsonFormat: Format[T]) extends DTO {
+final case class AbstractResponseDto[T](payload: T)(implicit ct: ClassTag[T], jsonFormat: Format[T]) extends DTO {
+  locally(ct)
+  locally(jsonFormat)
+
   private val payloadType: String = ct.runtimeClass.getName
 
   override def toJson: JsValue = Json toJson this
@@ -14,6 +17,8 @@ case class AbstractResponseDto[T](payload: T)(implicit ct: ClassTag[T], jsonForm
 object AbstractResponseDto {
   implicit def abstractResponseDtoToJson[T: Format](implicit ct: ClassTag[T]): OFormat[AbstractResponseDto[T]] =
     new OFormat[AbstractResponseDto[T]] {
+      locally(ct)
+      
       override def writes(dto: AbstractResponseDto[T]): JsObject = Json.obj(
         "payloadType" -> dto.payloadType,
         "payload" -> Json.toJson(dto.payload)

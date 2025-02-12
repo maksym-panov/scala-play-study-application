@@ -71,7 +71,8 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
     "find saved TODO by ID" in {
       val dto = CreateTODODto("test", "body")
 
-      val todoId: Long = createTodoViaRequest(dto).map(_.id).get
+      val todoId: Long = createTodoViaRequest(dto).map(_.id).getOrElse(-1)
+      todoId mustNot be < 0L
 
       val request = FakeRequest(GET, s"/api/study/v0/user/todo/$todoId")
       val response = route(app, request).get
@@ -104,7 +105,8 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
     "delete existing TODO" in {
       val dto = CreateTODODto("Test Delete", "Test delete body")
-      val todoId = createTodoViaRequest(dto).map(_.id).get
+      val todoId: Long = createTodoViaRequest(dto).map(_.id).getOrElse(-1)
+      todoId mustNot be < 0L
 
       val deleteRequest = FakeRequest(DELETE, s"/api/study/v0/user/todo/$todoId")
       val deleteResponse = route(app, deleteRequest).get

@@ -14,6 +14,10 @@ inThisBuild(
     )
 )
 
+ThisBuild / scalafixDependencies ++= Seq(
+    "io.github.dedis" %% "scapegoat-scalafix" % "1.1.4"
+)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .configs(Prod, Dev, CI)
