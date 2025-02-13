@@ -38,7 +38,9 @@ jobs:
           ./env.sh
 
       - name: Run tests
-        run: sbt clean Ci/test coverageReport
+        run: |
+          sbt clean Ci/test coverageReport
+          ls -lah target/scala-*/scoverage-report/
 
       - name: Run SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
