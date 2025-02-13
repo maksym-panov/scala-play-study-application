@@ -56,6 +56,12 @@ jobs:
 
       - name: Run SonarCloud Scan
         id: sonar
-        uses: SonarSource/sonarcloud-github-action@v2
+        run: |
+          curl -Lo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner.zip
+          sudo mv sonar-scanner-5.0.1.3006-linux /usr/local/bin/sonar-scanner
+          echo "SonarScanner installed successfully"
+          cd ${{ github.workspace }}
+          sonar-scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
