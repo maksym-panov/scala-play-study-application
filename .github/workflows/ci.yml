@@ -12,13 +12,13 @@ permissions:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
-    steps:
+    runs-on: sbtscala/scala-sbt:eclipse-temurin-17.0.13_11_1.10.7_3.6.3
+  steps:
       - name: Checkout branch
         uses: actions/checkout@v4
 
-      - name: Install SBT
-        uses: sbt/setup-sbt@v1
+#      - name: Install SBT
+#        uses: sbt/setup-sbt@v1
 
       - name: Check Formatting
         run: sbt "scalafixAll --check" || (echo "Scalafix check failed!" && exit 1)
