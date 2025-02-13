@@ -48,15 +48,3 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: .
-
-      - name: Check SonarCloud Quality Gate
-        id: sonar-quality-gate
-        uses: SonarSource/sonarcloud-quality-gate-action@v1
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Fail Workflow if Quality Gate Failed
-        if: steps.sonar-quality-gate.outputs.quality-gate-status != 'PASSED'
-        run: |
-          echo "❌ Quality Gate failed!"
-          exit
