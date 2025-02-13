@@ -3,9 +3,8 @@ package dto
 import model.TODO
 import play.api.libs.json.{JsValue, Json, OFormat}
 
-import java.util
 
-case class TODOListDto(count: Long, items: Set[TODODto]) extends DTO {
+final case class TODOListDto(count: Long, items: Set[TODODto]) extends DTO {
   override def toJson: JsValue = Json toJson this
 }
 

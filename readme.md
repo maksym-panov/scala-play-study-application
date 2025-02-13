@@ -19,3 +19,7 @@ You should receive
   "status": "HEALTHY" 
 }
 ```
+3. Run linting
+```shell
+sbt scalafixAll
+```

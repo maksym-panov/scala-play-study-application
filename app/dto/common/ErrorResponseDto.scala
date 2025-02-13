@@ -3,7 +3,7 @@ package dto.common
 import dto.DTO
 import play.api.libs.json.{JsValue, Json, OFormat}
 
-case class ErrorResponseDto(error: String, errorType: ErrorType) extends DTO {
+final case class ErrorResponseDto(error: String, errorType: ErrorType) extends DTO {
   override def toJson: JsValue = Json toJson this
 }
 

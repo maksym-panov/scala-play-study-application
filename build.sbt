@@ -7,10 +7,23 @@ lazy val CI = config("ci") extend Test
 lazy val Dev = config("dev") extend Compile
 lazy val Prod = config("prod") extend Compile
 
+inThisBuild(
+    List(
+        scalaVersion := "3.3.5",
+        semanticdbEnabled := true
+    )
+)
+
+ThisBuild / scalafixDependencies ++= Seq(
+    "io.github.dedis" %% "scapegoat-scalafix" % "1.1.4"
+)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .configs(Prod, Dev, CI)
   .settings(
+    scalacOptions += "-Wunused:imports",
+
     inConfig(Prod)(Defaults.compileSettings),
     inConfig(Dev)(Defaults.compileSettings),
     inConfig(CI)(Defaults.testSettings),
@@ -29,7 +42,6 @@ lazy val root = (project in file("."))
 
     Prod / run / javaOptions += "-Dconfig.file=conf/prod.conf",
     Prod / mainClass := Some("play.core.server.ProdServerStart")
-
   )
 
 scalaVersion := "3.3.5"

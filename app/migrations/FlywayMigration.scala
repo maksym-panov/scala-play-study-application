@@ -1,9 +1,10 @@
 package migrations
 
-import play.api.inject.{SimpleModule, _}
-import javax.inject._
-import play.api._
 import org.flywaydb.core.Flyway
+import play.api._
+import play.api.inject.{SimpleModule, _}
+
+import javax.inject._
 
 @Singleton 
 class FlywayMigration @Inject()(config: Configuration) {

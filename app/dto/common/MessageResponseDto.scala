@@ -3,7 +3,7 @@ package dto.common
 import dto.DTO
 import play.api.libs.json.{JsValue, Json, OFormat}
 
-case class MessageResponseDto(msg: String) extends DTO {
+final case class MessageResponseDto(msg: String) extends DTO {
   override def toJson: JsValue = Json toJson this
 }
 

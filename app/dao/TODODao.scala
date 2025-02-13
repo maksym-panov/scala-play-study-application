@@ -9,6 +9,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class TODODao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
+  locally(ec)
+
   import profile.api._
 
   private val todos = TableQuery[TODOS]

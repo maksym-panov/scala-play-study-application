@@ -7,7 +7,7 @@ import model.TODO
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json, OFormat}
-import play.api.test.Helpers.*
+import play.api.test.Helpers._
 import play.api.test.{FakeRequest, Injecting}
 
 import scala.util.Random
@@ -34,18 +34,16 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
           value.id must be > 0L
           value.title mustBe dto.title
           value.body mustBe dto.body
-        case None => fail(s"Invalid JSON response - None")
+        case None => fail("Invalid JSON response - None")
       }
     }
 
     "list all saved TODOs" in {
       val dtos = (1 to 3) map (i => CreateTODODto(s"TODO$i", s"body$i"))
-      val createdIds = dtos.map(dto => FakeRequest(POST, "/api/study/v0/user/todo").withBody(Json toJson dto))
+      val createdIds: Seq[Long] = dtos.map(dto => FakeRequest(POST, "/api/study/v0/user/todo").withBody(Json toJson dto))
         .map(request => contentAsJson(route(app, request).get))
-        .map(opt => opt.asOpt[AbstractResponseDto[TODODto]])
-        .map(opt => opt.map(_.payload.id))
-        .filter(_.isDefined)
-        .map(_.get)
+        .map(json => json.asOpt[AbstractResponseDto[TODODto]])
+        .flatMap(opt => opt.map(_.payload.id))
 
       createdIds.length mustEqual 3
 
@@ -71,7 +69,8 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
     "find saved TODO by ID" in {
       val dto = CreateTODODto("test", "body")
 
-      val todoId: Long = createTodoViaRequest(dto).map(_.id).get
+      val todoId: Long = createTodoViaRequest(dto).map(_.id).getOrElse(-1)
+      todoId mustNot be < 0L
 
       val request = FakeRequest(GET, s"/api/study/v0/user/todo/$todoId")
       val response = route(app, request).get
@@ -104,7 +103,8 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
     "delete existing TODO" in {
       val dto = CreateTODODto("Test Delete", "Test delete body")
-      val todoId = createTodoViaRequest(dto).map(_.id).get
+      val todoId: Long = createTodoViaRequest(dto).map(_.id).getOrElse(-1)
+      todoId mustNot be < 0L
 
       val deleteRequest = FakeRequest(DELETE, s"/api/study/v0/user/todo/$todoId")
       val deleteResponse = route(app, deleteRequest).get
