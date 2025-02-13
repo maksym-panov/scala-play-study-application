@@ -13,7 +13,7 @@ permissions:
 jobs:
   build-and-test:
     runs-on: sbtscala/scala-sbt:eclipse-temurin-17.0.13_11_1.10.7_3.6.3
-  steps:
+    steps:
       - name: Checkout branch
         uses: actions/checkout@v4
 
@@ -45,7 +45,11 @@ jobs:
 #        env:
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Java version
+        run: java --version
+
       - name: Run SonarCloud Scan
+        id: sonar
         uses: pervasive-cats/sonarcloud-scoverage-fix@v1.0.0
         with:
           scoverageReport: target/scala-3.3.5/scoverage-report/scoverage.xml
