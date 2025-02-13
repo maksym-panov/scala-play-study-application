@@ -40,12 +40,10 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
     "list all saved TODOs" in {
       val dtos = (1 to 3) map (i => CreateTODODto(s"TODO$i", s"body$i"))
-      val createdIds = dtos.map(dto => FakeRequest(POST, "/api/study/v0/user/todo").withBody(Json toJson dto))
+      val createdIds: Seq[Long] = dtos.map(dto => FakeRequest(POST, "/api/study/v0/user/todo").withBody(Json toJson dto))
         .map(request => contentAsJson(route(app, request).get))
-        .map(opt => opt.asOpt[AbstractResponseDto[TODODto]])
-        .map(opt => opt.map(_.payload.id))
-        .filter(_.isDefined)
-        .map(_.get)
+        .map(json => json.asOpt[AbstractResponseDto[TODODto]])
+        .flatMap(opt => opt.map(_.payload.id))
 
       createdIds.length mustEqual 3
 
