@@ -11,10 +11,8 @@ permissions:
   security-events: write
 
 jobs:
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -42,26 +40,7 @@ jobs:
           sbt clean Ci/test coverageReport
           ls -lah target/scala-*/scoverage-report/
 
-      - name: Debug Directory Structure
-        run: ls -lah ${{ github.workspace }}
-
-#      - name: Run SonarCloud Scan
-#        id: sonar
-#        uses: SonarSource/sonarcloud-github-action@v2
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        with:
-#          args: >
-#            -Dsonar.projectBaseDir=${{ github.workspace }}
-
       - name: Run SonarCloud Scan
-        id: sonar
-        run: |
-          curl -Lo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          sudo mv sonar-scanner-5.0.1.3006-linux /usr/local/bin/sonar-scanner
-          echo "SonarScanner installed successfully"
-          cd ${{ github.workspace }}
-          sonar-scanner
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
