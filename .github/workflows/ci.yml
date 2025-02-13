@@ -47,10 +47,10 @@ jobs:
 
       - name: Run SonarCloud Scan
         id: sonar
-        working-directory: ${{ github.workspace }}
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectBaseDir=${{ github.workspace }}
+            
