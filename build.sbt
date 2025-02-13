@@ -18,7 +18,7 @@ lazy val root = (project in file("."))
     // Compiler options
     scalaVersion := "3.3.5",
     scalacOptions += "-Wunused:imports",
-    javacOptions ++= Seq("-source", "17", "-target", "17", "-Dfile.encoding", "UTF-8"),
+    javacOptions ++= Seq("-source", "17", "-target", "17"),
 
     // Base configurations
     inConfig(Prod)(Defaults.compileSettings),
