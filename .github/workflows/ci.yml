@@ -42,8 +42,12 @@ jobs:
           sbt clean Ci/test coverageReport
           ls -lah target/scala-*/scoverage-report/
 
+      - name: Debug Directory Structure
+        run: ls -lah ${{ github.workspace }}
 
       - name: Run SonarCloud Scan
+        id: sonar
+        working-directory: ${{ github.workspace }}
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
