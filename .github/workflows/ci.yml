@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: error
+        run: exit 1
+
       - name: Checkout branch
         uses: actions/checkout@v4
 
@@ -23,7 +26,6 @@ jobs:
         uses: sbt/setup-sbt@v1
 
       - name: Check Formatting
-        id: scalafix
         run: sbt "scalafixAll --check" || (echo "Scalafix check failed!" && exit 1)
 
       - name: Install Docker Compose
@@ -39,5 +41,4 @@ jobs:
           ./env.sh
 
       - name: Run tests
-        id: tests
         run: sbt ci:test
