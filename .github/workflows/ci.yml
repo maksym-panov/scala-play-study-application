@@ -46,25 +46,8 @@ jobs:
           sbt clean Ci/test coverageReport
           ls -lah target/scala-*/scoverage-report/
 
-#      - name: Run SonarCloud Scan
-#        uses: SonarSource/sonarcloud-github-action@v2
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
       - name: Install SonarCloud Scan
-        run: |
-          java --version
-          echo $JAVA_HOME
-          echo $GITHUB_WORKSPACE
-          ls -lah target/scala-3.3.5/scoverage-report/
-          sed -i 's|${GITHUB_WORKSPACE}|/github/workspace|g' target/scala-3.3.5/scoverage-report/scoverage.xml
-          sudo apt-get update && sudo apt install -y unzip wget && \
-          wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip && \
-          sudo unzip sonar-scanner.zip -d /opt && \
-            rm sonar-scanner.zip && \
-            sudo ln -s /opt/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner && \
-            echo "export PATH=/opt/sonar-scanner-5.0.1.3006-linux/bin:\$PATH" >> ~/.bashrc && \
-            source ~/.bashrc
+        run: ./install-sonar.sh
         env:
           GITHUB_WORKSPACE: ${{ github.workspace }}
 
