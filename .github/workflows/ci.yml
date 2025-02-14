@@ -16,12 +16,17 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install SBT
         uses: sbt/setup-sbt@v1
 
-      - name: Check Formatting
-        run: sbt "scalafixAll --check" || (echo "Scalafix check failed!" && exit 1)
+#      - name: Check ScalaFix Formatting
+#        run: sbt "scalafixAll --check" || (echo "Scalafix check failed!" && exit 1)
+
+      - name: Check Scalafmt Formatting
+        run: sbt scalafmtCheckAll
 
       - name: Install Docker Compose
         run: |
@@ -38,7 +43,7 @@ jobs:
       - name: Run tests
         run: sbt clean Ci/test coverageReport
 
-      - name: Install SonarCloud Scan
+      - name: Install SonarCloud
         working-directory: .github/workflows
         run: ./install-sonar.sh
         env:
@@ -46,9 +51,7 @@ jobs:
 
       - name: Run SonarCloud Scan
         id: sonar
-        run: |
-          sonar-scanner --version
-          sonar-scanner
+        run: sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

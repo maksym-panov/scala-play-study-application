@@ -1,14 +1,16 @@
 package migrations
 
-import org.flywaydb.core.Flyway
-import play.api._
-import play.api.inject.{SimpleModule, _}
-
 import javax.inject._
 
-@Singleton 
-class FlywayMigration @Inject()(config: Configuration) {
-  private val flyway = Flyway.configure()
+import org.flywaydb.core.Flyway
+import play.api._
+import play.api.inject._
+import play.api.inject.SimpleModule
+
+@Singleton
+class FlywayMigration @Inject() (config: Configuration) {
+  private val flyway = Flyway
+    .configure()
     .dataSource(
       config.getOptional[String]("slick.dbs.default.db.url").get,
       config.getOptional[String]("slick.dbs.default.db.user").get,

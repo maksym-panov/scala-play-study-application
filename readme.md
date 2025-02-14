@@ -23,7 +23,7 @@ sbt -Dhttp.port=80 run
 ```
 2. Check health
 ```shell
-curl localhost/api/study/v0/platform/health
+curl http://localhost/api/study/v0/platform/health
 ```
 You should receive
 ```json
@@ -33,5 +33,5 @@ You should receive
 ```
 3. Run linting
 ```shell
-sbt scalafixAll
+sbt scalafmt
 ```

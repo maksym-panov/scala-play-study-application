@@ -1,16 +1,24 @@
 package e2e
 
-import dto.common.ErrorType.EntityNotFoundErr
-import dto.common.{AbstractResponseDto, ErrorResponseDto}
-import dto.{CreateTODODto, TODODto, TODOListDto}
-import model.TODO
-import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice.GuiceOneAppPerTest
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json, OFormat}
-import play.api.test.Helpers._
-import play.api.test.{FakeRequest, Injecting}
-
 import scala.util.Random
+
+import dto.common.AbstractResponseDto
+import dto.common.ErrorResponseDto
+import dto.common.ErrorType.EntityNotFoundErr
+import dto.CreateTODODto
+import dto.TODODto
+import dto.TODOListDto
+import model.TODO
+import org.scalatestplus.play.guice.GuiceOneAppPerTest
+import org.scalatestplus.play.PlaySpec
+import play.api.libs.json.JsError
+import play.api.libs.json.JsSuccess
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.OFormat
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import play.api.test.Injecting
 
 class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
 
@@ -21,7 +29,8 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
   private def createTodoViaRequest(dto: CreateTODODto): Option[TODODto] = {
     val request = FakeRequest(POST, "/api/study/v0/user/todo/")
       .withBody(dto.toJson)
-    contentAsJson(route(app, request).get).asOpt[AbstractResponseDto[TODODto]]
+    contentAsJson(route(app, request).get)
+      .asOpt[AbstractResponseDto[TODODto]]
       .map(_.payload)
   }
 
@@ -39,15 +48,16 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
     }
 
     "list all saved TODOs" in {
-      val dtos = (1 to 3) map (i => CreateTODODto(s"TODO$i", s"body$i"))
-      val createdIds: Seq[Long] = dtos.map(dto => FakeRequest(POST, "/api/study/v0/user/todo").withBody(Json toJson dto))
+      val dtos = (1 to 3).map(i => CreateTODODto(s"TODO$i", s"body$i"))
+      val createdIds: Seq[Long] = dtos
+        .map(dto => FakeRequest(POST, "/api/study/v0/user/todo").withBody(Json.toJson(dto)))
         .map(request => contentAsJson(route(app, request).get))
         .map(json => json.asOpt[AbstractResponseDto[TODODto]])
         .flatMap(opt => opt.map(_.payload.id))
 
       createdIds.length mustEqual 3
 
-      val request = FakeRequest(GET, "/api/study/v0/user/todo")
+      val request  = FakeRequest(GET, "/api/study/v0/user/todo")
       val response = route(app, request).get
 
       status(response) mustBe OK
@@ -59,7 +69,8 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
       todoListOpt match {
         case Some(TODOListDto(_, items)) =>
-          val matchingTodos = items.map(_.id)
+          val matchingTodos = items
+            .map(_.id)
             .filter(createdIds contains _)
           matchingTodos.size mustEqual 3
         case None => fail("Response JSON is not a valid list of TODOs")
@@ -72,7 +83,7 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
       val todoId: Long = createTodoViaRequest(dto).map(_.id).getOrElse(-1)
       todoId mustNot be < 0L
 
-      val request = FakeRequest(GET, s"/api/study/v0/user/todo/$todoId")
+      val request  = FakeRequest(GET, s"/api/study/v0/user/todo/$todoId")
       val response = route(app, request).get
 
       status(response) mustBe OK
@@ -93,20 +104,23 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
     "return not found error if TODO does not exist" in {
       val nonExistingId = random.nextLong
-      val request = FakeRequest(GET, s"/api/study/v0/user/todo/$nonExistingId")
-      val response = route(app, request).get
+      val request       = FakeRequest(GET, s"/api/study/v0/user/todo/$nonExistingId")
+      val response      = route(app, request).get
 
       status(response) mustBe NOT_FOUND
       contentType(response) mustBe Some(JSON)
-      contentAsJson(response) mustBe ErrorResponseDto(s"TODO with id $nonExistingId not found", EntityNotFoundErr).toJson
+      contentAsJson(response) mustBe ErrorResponseDto(
+        s"TODO with id $nonExistingId not found",
+        EntityNotFoundErr
+      ).toJson
     }
 
     "delete existing TODO" in {
-      val dto = CreateTODODto("Test Delete", "Test delete body")
+      val dto          = CreateTODODto("Test Delete", "Test delete body")
       val todoId: Long = createTodoViaRequest(dto).map(_.id).getOrElse(-1)
       todoId mustNot be < 0L
 
-      val deleteRequest = FakeRequest(DELETE, s"/api/study/v0/user/todo/$todoId")
+      val deleteRequest  = FakeRequest(DELETE, s"/api/study/v0/user/todo/$todoId")
       val deleteResponse = route(app, deleteRequest).get
       status(deleteResponse) mustBe OK
 
@@ -115,16 +129,19 @@ class TODOControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
         .asOpt[ErrorResponseDto]
       getResponse match {
         case Some(value) => value mustEqual ErrorResponseDto(s"TODO with id $todoId not found", EntityNotFoundErr)
-        case None => fail("Unexpected response")
+        case None        => fail("Unexpected response")
       }
     }
 
     "return not found if client tries to remove non-existing TODO" in {
       val nonExistingId = random.nextLong
-      val request = FakeRequest(DELETE, s"/api/study/v0/user/todo/$nonExistingId")
-      val response = route(app, request).get
+      val request       = FakeRequest(DELETE, s"/api/study/v0/user/todo/$nonExistingId")
+      val response      = route(app, request).get
       status(response) mustBe NOT_FOUND
-      contentAsJson(response) mustEqual ErrorResponseDto(s"TODO with id $nonExistingId not found", EntityNotFoundErr).toJson
+      contentAsJson(response) mustEqual ErrorResponseDto(
+        s"TODO with id $nonExistingId not found",
+        EntityNotFoundErr
+      ).toJson
     }
 
   }
