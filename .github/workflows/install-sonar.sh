@@ -9,7 +9,7 @@ echo "📂 Listing coverage report directory..."
 ls -lah ../../target/scala-3.3.5/scoverage-report/
 
 echo "🛠 Fixing paths in scoverage.xml..."
-sed -i 's|${GITHUB_WORKSPACE}|/github/workspace|g' target/scala-3.3.5/scoverage-report/scoverage.xml
+sed -i 's|${GITHUB_WORKSPACE}|/github/workspace|g' ../../target/scala-3.3.5/scoverage-report/scoverage.xml
 
 echo "🚀 Installing SonarScanner..."
 sudo apt-get update && sudo apt install -y unzip wget && \
