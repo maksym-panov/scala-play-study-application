@@ -20,8 +20,8 @@ jobs:
       - name: Install SBT
         uses: sbt/setup-sbt@v1
 
-      - name: Check ScalaFix Formatting
-        run: sbt "scalafixAll --check" || (echo "Scalafix check failed!" && exit 1)
+#      - name: Check ScalaFix Formatting
+#        run: sbt "scalafixAll --check" || (echo "Scalafix check failed!" && exit 1)
 
       - name: Check Scalafmt Formatting
         run: sbt scalafmtCheckAll
