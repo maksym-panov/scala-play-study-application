@@ -1,5 +1,11 @@
 # Demo Scala 2 / Play 3 REST API Application
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=maksym-panov_scala-play-study-application&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=maksym-panov_scala-play-study-application)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=maksym-panov_scala-play-study-application&metric=bugs)](https://sonarcloud.io/summary/new_code?id=maksym-panov_scala-play-study-application)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=maksym-panov_scala-play-study-application&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=maksym-panov_scala-play-study-application)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=maksym-panov_scala-play-study-application&metric=coverage)](https://sonarcloud.io/summary/new_code?id=maksym-panov_scala-play-study-application)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=maksym-panov_scala-play-study-application&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=maksym-panov_scala-play-study-application)
+
 ## Requirements
 - sbt version: 1.10.7 
 - Scala version: 2.13.16
