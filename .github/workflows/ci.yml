@@ -2,7 +2,7 @@ name: Scala Play Application CI
 
 on:
   push:
-    branches: [ "master", "dev" ]
+    branches: [ "master" ]
   pull_request:
 
 permissions:
