@@ -56,6 +56,7 @@ jobs:
           java --version
           echo $JAVA_HOME
           echo $GITHUB_WORKSPACE
+          ls -lah target/scala-3.3.5/scoverage-report/
           sed -i 's|/Users/maksym/Desktop/scala-play-study-application|/github/workspace|g' target/scala-3.3.5/scoverage-report/scoverage.xml
           grep "/github/workspace" target/scala-3.3.5/scoverage-report/scoverage.xml        
           sudo apt update && sudo apt install -y unzip wget && \
