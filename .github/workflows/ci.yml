@@ -43,7 +43,7 @@ jobs:
       - name: Run tests
         run: sbt clean Ci/test coverageReport
 
-      - name: Install SonarCloud Scan
+      - name: Install SonarCloud
         working-directory: .github/workflows
         run: ./install-sonar.sh
         env:
