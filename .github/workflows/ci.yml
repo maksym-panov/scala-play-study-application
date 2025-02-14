@@ -17,12 +17,6 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v4
 
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
       - name: Install SBT
         uses: sbt/setup-sbt@v1
 
@@ -42,9 +36,7 @@ jobs:
           ./env.sh
 
       - name: Run tests
-        run: |
-          sbt clean Ci/test coverageReport
-          ls -lah target/scala-*/scoverage-report/
+        run: sbt clean Ci/test coverageReport
 
       - name: Install SonarCloud Scan
         working-directory: .github/workflows

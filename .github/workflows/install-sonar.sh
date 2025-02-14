@@ -6,7 +6,7 @@ echo $JAVA_HOME
 echo $GITHUB_WORKSPACE
 
 echo "📂 Listing coverage report directory..."
-ls -lah target/scala-3.3.5/scoverage-report/
+ls -lah ../../target/scala-3.3.5/scoverage-report/
 
 echo "🛠 Fixing paths in scoverage.xml..."
 sed -i 's|${GITHUB_WORKSPACE}|/github/workspace|g' target/scala-3.3.5/scoverage-report/scoverage.xml
