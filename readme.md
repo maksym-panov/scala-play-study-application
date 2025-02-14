@@ -36,5 +36,5 @@ You should receive
 ```
 3. Run linting
 ```shell
-sbt scalafmt
+sbt scalafmtAll
 ```

@@ -1,8 +1,8 @@
 package e2e
 
 import controllers.PlatformController
-import dto.HealthResponseDto
 import dto.common.AbstractResponseDto
+import dto.HealthResponseDto
 import org.scalatestplus.play.*
 import org.scalatestplus.play.guice.*
 import play.api.test.*
