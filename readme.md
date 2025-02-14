@@ -27,8 +27,11 @@ curl http://localhost/api/study/v0/platform/health
 ```
 You should receive
 ```json
-{ 
-  "status": "HEALTHY" 
+{
+  "payloadType": "dto.HealthResponseDto",
+  "payload": {
+    "status":"HEALTHY"
+  }
 }
 ```
 3. Run linting
