@@ -57,7 +57,7 @@ jobs:
           echo $JAVA_HOME
           echo $GITHUB_WORKSPACE
           ls -lah target/scala-3.3.5/scoverage-report/
-          sed -i '' 's|${GITHUB_WORKSPACE}|/github/workspace|g' target/scala-3.3.5/scoverage-report/scoverage.xml
+          sed -i 's|${GITHUB_WORKSPACE}|/github/workspace|g' target/scala-3.3.5/scoverage-report/scoverage.xml
           sudo apt-get update && sudo apt install -y unzip wget && \
           wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip && \
           sudo unzip sonar-scanner.zip -d /opt && \
