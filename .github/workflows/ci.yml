@@ -52,7 +52,9 @@ jobs:
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Java version
-        run: java --version
+        run: |
+          java --version
+          echo $JAVA_HOME
 
       - name: Run SonarCloud Scan
         id: sonar
