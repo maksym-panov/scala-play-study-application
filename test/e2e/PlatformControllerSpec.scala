@@ -1,10 +1,12 @@
 package e2e
 
 import controllers.PlatformController
-import org.scalatestplus.play._
-import org.scalatestplus.play.guice._
-import play.api.test._
-import play.api.test.Helpers._
+import dto.common.AbstractResponseDto
+import dto.HealthResponseDto
+import org.scalatestplus.play.*
+import org.scalatestplus.play.guice.*
+import play.api.test.*
+import play.api.test.Helpers.*
 
 // https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
 class PlatformControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
@@ -17,7 +19,7 @@ class PlatformControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
       status(health) mustBe OK
       contentType(health) mustBe Some("application/json")
-      contentAsString(health) must include("{ \"status\": \"HEALTHY\" }")
+      contentAsJson(health) mustEqual AbstractResponseDto(HealthResponseDto.ofHealthy).toJson
     }
 
     "return health status from the application" in {
@@ -26,7 +28,7 @@ class PlatformControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
       status(health) mustBe OK
       contentType(health) mustBe Some("application/json")
-      contentAsString(health) must include("{ \"status\": \"HEALTHY\" }")
+      contentAsJson(health) mustEqual AbstractResponseDto(HealthResponseDto.ofHealthy).toJson
     }
 
     "return health status from the router" in {
@@ -35,7 +37,7 @@ class PlatformControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
       status(health) mustBe OK
       contentType(health) mustBe Some("application/json")
-      contentAsString(health) must include("{ \"status\": \"HEALTHY\" }")
+      contentAsJson(health) mustEqual AbstractResponseDto(HealthResponseDto.ofHealthy).toJson
     }
   }
 }

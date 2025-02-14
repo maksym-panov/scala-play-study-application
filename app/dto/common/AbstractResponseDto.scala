@@ -10,7 +10,8 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.libs.json.OFormat
 
-final case class AbstractResponseDto[T](payload: T)(implicit ct: ClassTag[T], jsonFormat: Format[T]) extends DTO {
+final case class AbstractResponseDto[T <: DTO](payload: T)(implicit ct: ClassTag[T], jsonFormat: Format[T])
+    extends DTO {
   locally(ct)
   locally(jsonFormat)
 
@@ -20,13 +21,13 @@ final case class AbstractResponseDto[T](payload: T)(implicit ct: ClassTag[T], js
 }
 
 object AbstractResponseDto {
-  implicit def abstractResponseDtoToJson[T: Format](implicit ct: ClassTag[T]): OFormat[AbstractResponseDto[T]] =
+  implicit def abstractResponseDtoToJson[T <: DTO: Format](implicit ct: ClassTag[T]): OFormat[AbstractResponseDto[T]] =
     new OFormat[AbstractResponseDto[T]] {
       locally(ct)
 
       override def writes(dto: AbstractResponseDto[T]): JsObject = Json.obj(
         "payloadType" -> dto.payloadType,
-        "payload"     -> Json.toJson(dto.payload)
+        "payload"     -> dto.payload.toJson
       )
 
       override def reads(json: JsValue): JsResult[AbstractResponseDto[T]] = for {
